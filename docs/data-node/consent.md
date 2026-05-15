@@ -1,4 +1,4 @@
-# Checking Consent
+# Consent
 
 The DUP Pipeline calculates consent based on the description [here](https://medizininformatik-initiative.github.io/torch/implementation/consent.html)
 
@@ -100,7 +100,7 @@ In the standard use case the following addition to the cohort part of the CRTDL 
 
 </details>
 
-Full example CRTDL [here](./queries/example-crtdl-consent.json)
+Full example CRTDL [here](https://github.com/medizininformatik-initiative/dataportal/blob/main/data-node/aether/queries/example-crtdl-consent.json)
 
 Based on this input, TORCH will extract resources and check each resource against the consent period. It is important to verify this calculation against site-specific data using samples from the extraction.
 
