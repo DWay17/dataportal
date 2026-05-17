@@ -9,6 +9,7 @@ torch/queries/*
 !torch/queries/README.md
 output
 aether/queries/*
+aether/flatteningLookup.json
 !aether/queries/example-crtdl.json
 !aether/queries/example-crtdl-consent.json
 
