@@ -3,6 +3,12 @@ fhirVersion: R4
 fhirPathRules:
 # Base DIMP
 ## Patient
+  ### Generalize PostalCode to first two characters
+  - path: Patient.address.postalCode
+    method: generalize
+    cases:
+      "$this": "$this.toString().substring(0,2)"
+
   - path: Patient.address.country
     method: keep
   - path: Patient.address.state
@@ -15,25 +21,15 @@ fhirPathRules:
   ### Remove if patient deceased dateTime
   - path: Patient.deceased.ofType(dateTime)
     method: redact
-  ### Alternative - to Discuss: Keep deceased but generalize to month if patient deceased dateTime
-  #- path: Patient.deceased.ofType(dateTime)
-  #  method: generalize
-  #  cases:
-  #    "$this": "$this.toString().replaceMatches('(?<year>\\\\d{2,4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})\\\\b', '${year}-${month}')"
-  ### Generalize PostalCode to first two characters
-  - path: Patient.address.postalCode
-    method: generalize
-    cases:
-      "$this": "$this.toString().substring(0,2)"
   ### Generalize BirthDate to month
+  ###
+  ### A Method needs to be added here to add an extension with the quarter the Patient was born in
+  ### Alternatively it should be considered if one can not simply generalize to month instead of quarter
+  ### In this case the birthDate would simply be a normal date with 7 characters "2017-01" or if no month is provided "2017"
   - path: Patient.birthDate
     method: generalize
     cases:
       "$this": "$this.toString().replaceMatches('(?<year>\\\\d{2,4})-(?<month>\\\\d{2})-(?<day>\\\\d{2})\\\\b', '${year}-${month}')"
-  ###
-  ### A Method needs to be added here to add an extension with the quarter the Patient was born in
-  ### Alternatively it should be considered if one can not simply generalize to month instead of quarter
-  ### In this case the birthDate would simply be a normaal date with 7 characters "2017-01" or if no month is provided "2017"
 
 ## Base - All Resources
   - path: nodesByType('Address')
