@@ -5,7 +5,9 @@ The use documentation describes how the different tools of the data node should 
 
 - [Pipeline Coordination: aether](aether.md)
 - [Data Extraction: TORCH](TORCH.md)
+- [Consent: TORCH Consent Calculation](consent.md)
 - [DIMP: fhir-pseudonymizer](DIMP.md)
 - [FHIR Validation: mii-fhir-validator](mii-fhir-validator.md)
 - [FHIR flattening: fhir-flattener](fhir-flattener.md)
 - [FHIR metadata reporting: fhir-data-evaluator](fhir-data-evaluator.md)
+

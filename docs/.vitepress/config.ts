@@ -82,6 +82,7 @@ export default withMermaid({
                         items: [
                             { text: 'Pipeline Coordination: aether', link: '/data-node/aether.md' },
                             { text: 'Data Extraction: TORCH', link: '/data-node/TORCH.md' },
+                            { text: 'Consent: TORCH Consent Calculation', link: '/data-node/consent.md' },
                             { text: 'DIMP: fhir-pseudonymizer', link: '/data-node/DIMP.md' },
                             { text: 'FHIR Validation: mii-fhir-validator', link: '/data-node/mii-fhir-validator.md' },
                             { text: 'FHIR Flattening: fhir-flattener', link: '/data-node/fhir-flattener.md' },

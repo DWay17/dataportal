@@ -28,7 +28,7 @@ services:
   # DIMP Pseudonymization Service (optional)
   # Leave empty to skip pseudonymization step
   dimp:
-    url: "http://localhost:8083/fhir"
+    url: "http://localhost:8083"
 
     # Bundle splitting threshold in megabytes (MB)
     # Large FHIR Bundles exceeding this size will be automatically split into smaller chunks
@@ -160,7 +160,7 @@ services:
   # Leave url empty to skip validation step
   validation:
     # Validation service URL
-    url: "http://localhost:8080/fhir"
+    url: "http://localhost:8080"
 
     # Maximum concurrent validation requests (default: 4)
     max_concurrent_requests: 4
