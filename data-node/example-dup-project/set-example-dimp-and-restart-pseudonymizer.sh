@@ -10,6 +10,6 @@ else
 fi
 
 
-cd ../fhir-pseudonymizer
+cd ../fhir-pseudonymizer || exit 1
 docker compose -p dataportal down fhir-pseudonymizer
 docker compose -p dataportal up -d
