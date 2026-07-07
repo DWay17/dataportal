@@ -77,10 +77,12 @@ fhirPathRules:
     truncateToMaxLength: 32
 
 ## UKSH mii blaze ##
-  - path: nodesByType('target').reference
+ #- path: nodesByType('target').reference
+  - path: Bundle.entry.request.target.reference
     method: cryptoHash
     truncateToMaxLength: 32
-  - path: nodesByType('subject').reference
+ #- path: nodesByType('subject').reference
+  - path: Bundle.entry.request.subject.reference
     method: cryptoHash
     truncateToMaxLength: 32
 
