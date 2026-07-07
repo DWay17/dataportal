@@ -76,6 +76,16 @@ fhirPathRules:
     method: cryptoHash
     truncateToMaxLength: 32
 
+## UKSH mii blaze ##
+  - path: nodesByType('target').reference
+    method: cryptoHash
+    truncateToMaxLength: 32
+  - path: nodesByType('subject').reference
+    method: cryptoHash
+    truncateToMaxLength: 32
+
+
+####################
 
 ## Add specific logical References to be kept here - potential candidates are known cds identifier:
   - path: nodesByType('Reference').identifier.where(type.coding.where(system='http://terminology.hl7.org/CodeSystem/v2-0203' and (code='VN')).exists())
