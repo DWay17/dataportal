@@ -76,17 +76,24 @@ fhirPathRules:
     method: cryptoHash
     truncateToMaxLength: 32
 
+####################
 ## UKSH mii blaze ##
- #- path: nodesByType('target').reference
+####################
+  - path: nodesByType('target').reference
+    method: cryptoHash
+    truncateToMaxLength: 32
+  - path: nodesByType('subject').reference
+    method: cryptoHash
+    truncateToMaxLength: 32
   - path: Bundle.entry.request.target.reference
     method: cryptoHash
     truncateToMaxLength: 32
- #- path: nodesByType('subject').reference
   - path: Bundle.entry.request.subject.reference
     method: cryptoHash
     truncateToMaxLength: 32
 
-
+####################
+####################
 ####################
 
 ## Add specific logical References to be kept here - potential candidates are known cds identifier:
