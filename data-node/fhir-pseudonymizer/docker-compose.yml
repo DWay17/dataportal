@@ -1,3 +1,4 @@
+name: "${DATA_PORTAL_COMPOSE_PROJECT:-dataportal}"
 services:
   fhir-pseudonymizer:
     image: ghcr.io/miracum/fhir-pseudonymizer:v2.29.0
