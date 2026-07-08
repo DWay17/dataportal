@@ -85,6 +85,12 @@ fhirPathRules:
   - path: nodesByType('subject').reference
     method: cryptoHash
     truncateToMaxLength: 32
+  - path: nodesByType('target').target.reference
+    method: cryptoHash
+    truncateToMaxLength: 32
+  - path: nodesByType('subject').subject.reference
+    method: cryptoHash
+    truncateToMaxLength: 32
   - path: Bundle.entry.request.target.reference
     method: cryptoHash
     truncateToMaxLength: 32
