@@ -37,6 +37,8 @@ fhirPathRules:
     method: keep
   - path: Patient.address.postalCode
     method: keep
+  - path: Patient.address.type
+    method: keep
   ### Keep if patient deceased boolean
   - path: Patient.deceased.ofType(boolean)
     method: keep
