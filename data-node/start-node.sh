@@ -4,7 +4,7 @@ COMPOSE_PROJECT=${DATA_PORTAL_COMPOSE_PROJECT:-dataportal}
 BASE_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 || exit 1 ; pwd -P )"
 CERT_FILE=${CERT_FILE:-$BASE_DIR/auth/cert.pem}
 KEY_FILE=${KEY_FILE:-$BASE_DIR/auth/cert.key}
-TRUST_STORE_FILE=${KEY_FILE:-$BASE_DIR/auth/trust-store.p12}
+TRUST_STORE_FILE=${TRUST_STORE_FILE:-$BASE_DIR/auth/trust-store.p12}
 
 
 
