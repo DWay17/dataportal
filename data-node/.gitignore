@@ -1,5 +1,6 @@
 /ontology/*.json
 /testdata/*.json
+/testdata/*.ndjson
 /testdata/*.zip
 troubleshooting/input-queries.json
 fhir-data-evaluator/output/*
