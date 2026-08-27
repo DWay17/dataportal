@@ -108,8 +108,6 @@ fhirPathRules:
 ## Clean References - To discuss if necessary potentially problematic when using logical reference resolve
   - path: nodesByType('Reference').display
     method: redact
-  - path: nodesByType('Reference').identifier
-    method: redact
 
 ## Redact all remaining identifier unless otherwise specified
   - path: nodesByType('Identifier')
