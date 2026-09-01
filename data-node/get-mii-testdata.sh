@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 
-MII_TESTDATA_DOWNLOAD_URL="https://health-atlas.de/data_files/594/download?version=1"
+MII_TESTDATA_DOWNLOAD_URL="https://github.com/medizininformatik-initiative/mii-testdata/releases/download/v2026.0.0-rc.1/testdata-bundles-ndjson-20260330-135816.zip"
 
 wget -O testdata.zip "$MII_TESTDATA_DOWNLOAD_URL"
 unzip testdata.zip -d testdata-temp
-cd testdata-temp/Vorhofflimmern || exit
+mkdir testdata
+cd testdata-temp/ || exit
 
-for file in *.json.zip
-do
-    unzip -o "$file" -d ../../testdata
-done
 
-cd ../../
+find . -name '*.ndjson' -exec mv {} ../testdata \;
+
+cd ..
 rm testdata.zip
 rm -rf testdata-temp

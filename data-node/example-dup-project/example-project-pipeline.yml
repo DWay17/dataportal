@@ -35,7 +35,7 @@ services:
     # to prevent HTTP 413 "Payload Too Large" errors when sending to DIMP
     # Range: 1-100 MB
     # Default: 10 MB
-    bundle_split_threshold_mb: 10
+    bundle_split_threshold_mb: 100
 
 
   # CRTDL Preprocessing (optional)
