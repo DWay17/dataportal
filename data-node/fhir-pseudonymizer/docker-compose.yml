@@ -12,6 +12,8 @@ services:
     privileged: false
     env_file:
       - .env
+      - path: ./project.env
+        required: false
     volumes:
       - "${DIMP_DUP_YAML_PATH:-./dimp_dup_base.yaml}:/opt/fhir-pseudonymizer/dimp_dup_base.yaml:ro"
     ports:
