@@ -5,9 +5,19 @@ parameters:
 fhirPathRules:
 # Base DIMP
 
-## Always remove the identifier assigner - carries the institution name in
-## assigner.display and an unhashed technical reference in assigner.reference.
-## Must stay above the keep rules below, which shield the whole Identifier subtree.
+  - path: nodesByType('Reference').identifier.where(system='https://www.medizininformatik-initiative.de/fhir/fdpg/NamingSystem/attribute_group')
+    method: keep
+
+  - path: nodesByType('Reference').identifier.where(system='https://www.medizininformatik-initiative.de/fhir/fdpg/NamingSystem/extraction_id')
+    method: keep
+
+## Always hash systems of identifier
+ # This needs a feature in the pseudonymizer to allow hashing full urls
+ # - path: nodesByType('Identifier').system
+ #   method: cryptoHash
+ #   truncateToMaxLength: 32
+
+## Always remove the identifier assigner - carries the institution name in display
   - path: nodesByType('Identifier').assigner
     method: redact
 
@@ -105,12 +115,6 @@ fhirPathRules:
   - path: nodesByType('Reference').identifier.where(type.coding.where(system='http://terminology.hl7.org/CodeSystem/v2-0203' and (code='MR')).exists())
     method: keep
 
-  - path: nodesByType('Reference').identifier.where(system='https://www.medizininformatik-initiative.de/fhir/fdpg/NamingSystem/attribute_group')
-    method: keep
-
-  - path: nodesByType('Reference').identifier.where(system='https://www.medizininformatik-initiative.de/fhir/fdpg/NamingSystem/extraction_id')
-    method: keep
-
 ## Clean References - To discuss if necessary potentially problematic when using logical reference resolve
   - path: nodesByType('Reference').display
     method: redact
@@ -137,12 +141,6 @@ fhirPathRules:
 ## Redact all remaining identifier unless otherwise specified
   - path: nodesByType('Identifier')
     method: redact
-
-## Alternative to redaction - has to be discussed on per project basis
-
-  #- path: nodesByType('Identifier').system
-  #  method: cryptoHash
-  #  truncateToMaxLength: 32
 
   #- path: nodesByType('Identifier').value
   #  method: cryptoHash
