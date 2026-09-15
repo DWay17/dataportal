@@ -1,6 +1,8 @@
 #!/bin/bash -e
 
-VERSION="1.3.0"
+# v1.4.0 moved the DIMP anonymization config to services.dimp.anonymization_config
+# (see data-node/example-dup-project/example-project-pipeline.yml) - v1.3.0 ignores that key.
+VERSION="1.4.0"
 
 curl -sLO "https://github.com/medizininformatik-initiative/aether/releases/download/v$VERSION/aether-$VERSION-linux-amd64.tar.gz"
 tar xzf "aether-$VERSION-linux-amd64.tar.gz"
