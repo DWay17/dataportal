@@ -1,7 +1,8 @@
 """Verifies that the example DUP project's DIMP de-identification config
 (data-node/example-dup-project/example-project_dimp_dup_base.yaml) is picked
-up dynamically on every pipeline run (aether's experimental_v3
-anonymization_config), without needing to restart fhir-pseudonymizer.
+up dynamically on every pipeline run (aether's
+services.dimp.anonymization_config, sent as a `config` part on the stable
+$de-identify operation), without needing to restart fhir-pseudonymizer.
 
 Runs the pipeline twice:
 - "before": an empty fhirPathRules list, so DIMP applies no transformation
@@ -52,7 +53,7 @@ class Run(NamedTuple):
     csv_dir: pathlib.Path
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def _wait_for_pipeline_services():
     wait_for_url("http://localhost:8086/actuator/health")  # torch
     wait_for_url("http://localhost:8083/fhir/metadata")  # dimp
@@ -80,7 +81,7 @@ def _column(csv_dir: pathlib.Path, filename: str, column: str) -> list[str]:
 
 
 @pytest.fixture(scope="module")
-def before_and_after() -> tuple[Run, Run]:
+def before_and_after(_wait_for_pipeline_services) -> tuple[Run, Run]:
     original_yaml = DUP_YAML.read_text()
     assert CRYPTO_HASH_KEY in original_yaml, (
         f"expected to find cryptoHashKey {CRYPTO_HASH_KEY!r} in {DUP_YAML} - has it changed?"

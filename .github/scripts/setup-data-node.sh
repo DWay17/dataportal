@@ -10,15 +10,14 @@ DATA_NODE_DIR="$BASE_DIR/data-node"
 
 "$DATA_NODE_DIR/initialise-node-env-files.sh"
 
-sed -i -r -e 's#^(OPENID_PROVIDER_URL)=.*$#\1="https://auth.localhost:444/realms/blaze"#' \
-          -e 's#^(KC_HOSTNAME)=.*$#\1="https://auth.localhost:444/"#' \
-          -e 's#^(KC_HTTP_RELATIVE_PATH)=.*$#\1=/#' \
-    "$DATA_NODE_DIR/fhir-server/.env"
-sed -i -r -e 's#^(FHIR_SERVER_HOSTNAME)=.*$#\1="fhir.localhost"#' \
-          -e 's#^(FLARE_HOSTNAME)=.*$#\1="flare.localhost"#' \
-          -e 's#^(KEYCLOAK_HOSTNAME)=.*$#\1="auth.localhost"#' \
-          -e 's#^(DATA_NODE_REV_PROXY_NGINX_CONFIG)=.*$#\1="./subdomains.nginx.conf"#' \
-    "$DATA_NODE_DIR/rev-proxy/.env"
+# rev-proxy/docker-compose.yml reads these through ${VAR:-default} interpolation, and
+# compose gives the shell environment precedence over rev-proxy/.env - so exporting them
+# is enough and no edit of the generated .env is needed. This does not work for
+# fhir-server, whose compose files use env_file:.
+export FHIR_SERVER_HOSTNAME="fhir.localhost"
+export FLARE_HOSTNAME="flare.localhost"
+export KEYCLOAK_HOSTNAME="auth.localhost"
+export DATA_NODE_REV_PROXY_NGINX_CONFIG="./subdomains.nginx.conf"
 
 CERT_DOMAINS="localhost, fhir.localhost, auth.localhost, flare.localhost, torch.localhost, terminology.localhost, dimp.localhost, flattener.localhost, validator.localhost" \
   "$DATA_NODE_DIR/generate-cert.sh"
