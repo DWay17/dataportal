@@ -1,0 +1,24 @@
+{
+  "resourceType": "Condition",
+  "id": "VHF02002-CD-1",
+  "meta": {
+    "profile": [
+      "https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose"
+    ]
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+        "version": "2020",
+        "code": "I95.0"
+      }
+    ],
+    "text": "Idiopathische Hypotonie"
+  },
+  "subject": {
+    "reference": "Patient/VHF02002"
+  },
+  "recordedDate": "2021-01-01T00:00:00+01:00"
+}
+
