@@ -1,7 +1,7 @@
 name: "${DATA_PORTAL_COMPOSE_PROJECT:-dataportal}"
 services:
   fhir-pseudonymizer:
-    image: ghcr.io/miracum/fhir-pseudonymizer:v2.32.0
+    image: ghcr.io/miracum/fhir-pseudonymizer:v2.35.1
     restart: unless-stopped
     cap_drop:
       - ALL
@@ -15,6 +15,6 @@ services:
       - path: ./project.env
         required: false
     volumes:
-      - "${DIMP_DUP_YAML_PATH:-./dimp_dup_base.yaml}:/opt/fhir-pseudonymizer/dimp_dup_base.yaml:ro"
+      - "${DIMP_DUP_YAML_PATH:-./redact-all.yaml}:/opt/fhir-pseudonymizer/dimp_dup_base.yaml:ro"
     ports:
       - "127.0.0.1:8083:8080"
