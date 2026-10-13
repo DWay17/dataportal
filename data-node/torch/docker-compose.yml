@@ -1,7 +1,7 @@
 services:
   torch-nginx:
       restart: unless-stopped
-      image: nginxinc/nginx-unprivileged:1.27-alpine
+      image: nginxinc/nginx-unprivileged:1.31.6-alpine
       ports:
         - ${TORCH_NGINX_PORT:-127.0.0.1:80}:8080
       volumes:
@@ -9,7 +9,7 @@ services:
         - "${TORCH_DATA_VOLUME:-triangle-torch-data-store}:/app/output"
   torch:
     restart: unless-stopped
-    image: ghcr.io/medizininformatik-initiative/torch:1.0.1
+    image: ghcr.io/medizininformatik-initiative/torch:1.0.3
     ports:
       - ${TORCH_PORT:-127.0.0.1:8086}:8080
     env_file:

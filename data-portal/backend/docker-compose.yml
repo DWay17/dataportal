@@ -1,7 +1,7 @@
 services:
   dataportal-backend:
     restart: unless-stopped
-    image: ghcr.io/medizininformatik-initiative/dataportal-backend:9.3.1
+    image: ghcr.io/medizininformatik-initiative/dataportal-backend:9.3.0
     environment:
       QUERYRESULT_DISABLE_LOG_FILE_ENCRYPTION: true
     env_file:
@@ -21,7 +21,7 @@ services:
       - ../auth:/opt/dataportal-backend/certs
 
   dataportal-postgres:
-    image: 'postgres:16-alpine'
+    image: 'postgres:18.6-alpine'
     ports:
       - ${DATAPORTAL_BACKEND_DB_PORT:-127.0.0.1:5432}:5432
     environment:
@@ -32,9 +32,9 @@ services:
     volumes:
       - type: volume
         source: dataportal-postgres-data
-        target: /var/lib/postgresql/data
+        target: /var/lib/postgresql
   dataportal-elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.5
     ports:
       - ${DATAPORTAL_BACKEND_ES_PORT:-127.0.0.1:9200}:9200
     healthcheck:
