@@ -147,11 +147,18 @@ fhirPathRules:
     method: redact
 
 
-## Mask all remaining identifier (data-absent-reason) unless otherwise specified - keeps parent cardinality intact
+## Remaining identifiers - mask (default) or cryptohash, never both
+### Mask all remaining identifiers with a data-absent-reason - keeps parent cardinality intact
   - path: nodesByType('Identifier')
     method: substitute
     replaceWith: '{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"masked"}]}'
 
+### Cryptohash system and value of all remaining identifiers instead - keeps type
+### To use it, comment out the mask rule above and comment in both rules
+### They have to stay below the mask rule, so that forgetting to comment out the mask rule only masks
+  #- path: nodesByType('Identifier').system
+  #  method: cryptoHash
+  #  truncateToMaxLength: 32
   #- path: nodesByType('Identifier').value
   #  method: cryptoHash
   #  truncateToMaxLength: 32
