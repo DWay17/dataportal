@@ -1,6 +1,10 @@
 #!/bin/bash
 
 namespaces=(
+  "project-prefix-here-my-dic-encounter-vn-namespace"
+  "project-prefix-here-my-dic-patient-mr-namespace"
+  "project-prefix-here-my-dic-patient-pseuded-namespace"
+  "project-prefix-here-my-dic-patient-anonyed-namespace"
   "example-project-my-dic-encounter-vn-namespace"
   "example-project-my-dic-patient-mr-namespace"
   "example-project-my-dic-patient-pseuded-namespace"

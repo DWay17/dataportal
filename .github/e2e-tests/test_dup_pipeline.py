@@ -19,6 +19,7 @@ change and both runs happened to look similar.
 from __future__ import annotations
 
 import csv
+import json
 import pathlib
 import re
 import subprocess
@@ -47,10 +48,16 @@ BIRTHDATE_RE = re.compile(r"^\d{2,4}(-\d{2})?$")
 # raw, un-generalized source dates always carry full year-month-day precision
 FULL_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 HASHED_ID_RE = re.compile(r"^[0-9a-f]{32}$")
+DATA_ABSENT_REASON_MASKED = {
+    "extension": [
+        {"url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason", "valueCode": "masked"}
+    ]
+}
 
 
 class Run(NamedTuple):
     csv_dir: pathlib.Path
+    dimp_dir: pathlib.Path
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -68,12 +75,28 @@ def _run_pipeline() -> Run:
         check=True,
     )
     job_id = run_aether_pipeline(PROJECT_DIR, PIPELINE_CONFIG, CRTDL)
-    return Run(csv_dir=PROJECT_DIR / "jobs" / job_id / "csv")
+    job_dir = PROJECT_DIR / "jobs" / job_id
+    return Run(csv_dir=job_dir / "csv", dimp_dir=job_dir / "dimp")
 
 
 def _read_csv(path: pathlib.Path) -> list[dict[str, str]]:
     with path.open(newline="") as f:
         return list(csv.DictReader(f))
+
+
+def _read_resources(dimp_dir: pathlib.Path) -> list[dict]:
+    """Returns every resource in the DIMP output, unpacking Bundles."""
+    resources = []
+    for path in sorted(dimp_dir.glob("*.ndjson")):
+        for line in path.read_text().splitlines():
+            if not line.strip():
+                continue
+            resource = json.loads(line)
+            if resource["resourceType"] == "Bundle":
+                resources.extend(entry["resource"] for entry in resource.get("entry", []))
+            else:
+                resources.append(resource)
+    return resources
 
 
 def _column(csv_dir: pathlib.Path, filename: str, column: str) -> list[str]:
@@ -188,6 +211,31 @@ def test_unlisted_identifiers_become_redacted(before_and_after: tuple[Run, Run])
     assert not any(after_values), (
         "Observation identifiers are not on the DIMP pseudonymize+keep allow-list and should be "
         "redacted once the real DIMP config's catch-all redact rule was applied"
+    )
+
+
+def test_unlisted_identifiers_are_masked_with_data_absent_reason(before_and_after: tuple[Run, Run]):
+    before, after = before_and_after
+
+    def observation_identifiers(run: Run) -> list[dict]:
+        return [
+            identifier
+            for resource in _read_resources(run.dimp_dir)
+            if resource["resourceType"] == "Observation"
+            for identifier in resource.get("identifier", [])
+        ]
+
+    before_identifiers = observation_identifiers(before)
+    after_identifiers = observation_identifiers(after)
+    assert before_identifiers, "expected raw Observation identifiers with an empty DIMP config, found none"
+    assert DATA_ABSENT_REASON_MASKED not in before_identifiers
+
+    assert len(after_identifiers) == len(before_identifiers), (
+        "the catch-all Identifier rule should replace unlisted Observation identifiers, not drop them"
+    )
+    assert all(identifier == DATA_ABSENT_REASON_MASKED for identifier in after_identifiers), (
+        "expected every unlisted Observation identifier to be replaced by a data-absent-reason "
+        f"'masked' extension only, found {after_identifiers[:3]!r}"
     )
 
 
