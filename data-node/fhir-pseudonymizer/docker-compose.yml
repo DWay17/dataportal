@@ -1,7 +1,8 @@
 name: "${DATA_PORTAL_COMPOSE_PROJECT:-dataportal}"
 services:
   fhir-pseudonymizer:
-    image: ghcr.io/miracum/fhir-pseudonymizer:v2.38.0
+    #image: ghcr.io/miracum/fhir-pseudonymizer:v2.38.0
+    image: ghcr.io/miracum/fhir-pseudonymizer:v3.1.0
     restart: unless-stopped
     cap_drop:
       - ALL
