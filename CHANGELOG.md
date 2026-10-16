@@ -25,6 +25,20 @@ Please refer to the respective repositories for a more in depth changelog of sin
 |fhir-pseudonymizer|<https://github.com/miracum/fhir-pseudonymizer>|
 
 
+## [7.0.0] - unreleased
+
+### Breaking changes
+
+- postgres: The dataportal-backend database (`dataportal-postgres`) and the keycloak database (`auth-db`) are upgraded from Postgres 17 to 18. Postgres 18 cannot start on Postgres 17 data, and the volume mount moved from `/var/lib/postgresql/data` to `/var/lib/postgresql`. Existing installations have to migrate their data:
+  1. Before updating, dump each database with the old version running:
+     - backend: `docker compose exec dataportal-postgres pg_dumpall -U <DATABASE_USER> > backend-dump.sql` (default user `dataportaluser`)
+     - keycloak: `docker compose exec auth-db pg_dumpall -U <KC_DB_USERNAME> > keycloak-dump.sql` (default user `keycloakdbuser`)
+  2. Stop the stacks and remove the old volumes (`dataportal-postgres-data`, `dataportal-auth-db`, with the compose project prefix)
+  3. Update and start the new version, then restore each dump:
+     - backend: `docker compose exec -T dataportal-postgres psql -U <DATABASE_USER> -d postgres < backend-dump.sql`
+     - keycloak: `docker compose exec -T auth-db psql -U <KC_DB_USERNAME> -d postgres < keycloak-dump.sql`
+
+
 ## [6.3.0] - 2026-06-22
 
 ### Updates since last version

@@ -1,11 +1,13 @@
 name: "${DATA_PORTAL_COMPOSE_PROJECT:-dataportal}"
 services:
   fhir-pseudonymizer:
-    image: ghcr.io/miracum/fhir-pseudonymizer:v2.35.1
+    image: ghcr.io/miracum/fhir-pseudonymizer:v2.38.0
     restart: unless-stopped
     cap_drop:
       - ALL
     ipc: none
+    tmpfs:
+      - /tmp
     security_opt:
       - "no-new-privileges:true"
     read_only: true
