@@ -33,7 +33,7 @@ else
 fi
 
 
-if [ -f "$CERT_FILE" ] && [ -f "$KEY_FILE" ]; then
+if [ -f "$BASE_DIR"/rev-proxy/.env && -f "$BASE_DIR"/fhir-server/.env ] && [ -f "$CERT_FILE" ] && [ -f "$KEY_FILE" ]; then
     if [ -f "$TRUST_STORE_FILE" ]; then
         COMPOSE_IGNORE_ORPHANS=True docker compose -p "$COMPOSE_PROJECT" -f "$BASE_DIR"/rev-proxy/docker-compose.yml up -d
         COMPOSE_IGNORE_ORPHANS=True docker compose -p "$COMPOSE_PROJECT" -f "$BASE_DIR"/fhir-server/docker-compose.yml up -d --wait
