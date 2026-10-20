@@ -32,18 +32,21 @@ else
     fi
 fi
 
-
-if [ [ -f "$BASE_DIR"/rev-proxy/.env ] && [ -f "$BASE_DIR"/fhir-server/.env ] ] && [ -f "$CERT_FILE" ] && [ -f "$KEY_FILE" ]; then
-    if [ -f "$TRUST_STORE_FILE" ]; then
-        COMPOSE_IGNORE_ORPHANS=True docker compose -p "$COMPOSE_PROJECT" -f "$BASE_DIR"/rev-proxy/docker-compose.yml up -d
-        COMPOSE_IGNORE_ORPHANS=True docker compose -p "$COMPOSE_PROJECT" -f "$BASE_DIR"/fhir-server/docker-compose.yml up -d --wait
+if [ -f "$BASE_DIR"/rev-proxy/.env ] && [ -f "$BASE_DIR"/fhir-server/.env ] ; then
+    if [ -f "$CERT_FILE" ] && [ -f "$KEY_FILE" ]; then
+        if [ -f "$TRUST_STORE_FILE" ]; then
+            COMPOSE_IGNORE_ORPHANS=True docker compose -p "$COMPOSE_PROJECT" -f "$BASE_DIR"/rev-proxy/docker-compose.yml up -d
+            COMPOSE_IGNORE_ORPHANS=True docker compose -p "$COMPOSE_PROJECT" -f "$BASE_DIR"/fhir-server/docker-compose.yml up -d --wait
+        else
+            echo "Trust store ($TRUST_STORE_FILE) file is missing. Please run '$BASE_DIR/generate-cert.sh' and then retry."
+            exit 1
+        fi
     else
-        echo "Trust store ($TRUST_STORE_FILE) file is missing. Please run '$BASE_DIR/generate-cert.sh' and then retry."
+        echo "One of or both cert ($CERT_FILE) and key ($KEY_FILE) files are missing => NOT starting NGINX reverse proxy on port $PORT_NUM_NODE_REV_PROXY"
         exit 1
     fi
 else
-    echo "One of or both cert ($CERT_FILE) and key ($KEY_FILE) files are missing => NOT starting NGINX reverse proxy on port $PORT_NUM_NODE_REV_PROXY"
-    exit 1
+    echo "no .env files for fhir-server and rev-proxy"
 fi
 
 # FLARE
