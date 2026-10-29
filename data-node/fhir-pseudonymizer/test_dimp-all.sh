@@ -9,6 +9,10 @@ function test_dimp(){
     echo "Skipping $FILENAME because it contains 'out'"
     return
   fi
+  if [[ "$FILENAME" == *~ ]]; then
+    echo "Skipping $FILENAME because  ends with ~"
+    return
+  fi
 	DIRNAME=$(dirname "$FILE")
 	echo "DIRNAME $DIRNAME"
 	EXT="${FILENAME##*.}"
