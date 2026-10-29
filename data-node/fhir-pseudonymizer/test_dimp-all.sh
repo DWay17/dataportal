@@ -13,6 +13,11 @@ function test_dimp(){
   # -v --backup=numbered
   FILE_NEW=$(echo "$FILE" | sed -Ee 's#\bin\b#out#g')
   echo "FILE_NEW $FILE_NEW"
+  # insert out if same name
+  if [[ "$FILE" == "$FILE_NEW" ]]; then
+    FILE_NEW=$(echo "$FILE" | sed -Ee 's#\bin\b#out#g' -e 's#\.json$#-out.json#g')
+  fi
+  echo "FILE_NEW $FILE_NEW"
   mv -v --backup=numbered "$FILE_NEW" "$FILE_NEW~"
   return
   curl --request POST \
