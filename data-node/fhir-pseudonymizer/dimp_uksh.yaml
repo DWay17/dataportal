@@ -1,0 +1,10 @@
+
+  - path: "nodesByType('Coding').where(system.contains('uksh'))"
+    method: redact
+# assigner
+  - path: "nodesByType('assigner').where(system.contains('uksh'))"
+    method: redact
+# identifier
+  - path: "nodesByType('identifier').where(system.contains('uksh'))"
+    method: redact
+# Schleswig-Holstein
