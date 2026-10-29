@@ -4,6 +4,11 @@ function test_dimp(){
   FILE="$1"
   FILENAME=$(basename "$FILE")
 	echo "FILENAME $FILENAME"
+  # skip if contains out
+  if [[ "$FILENAME" == *out* ]]; then
+    echo "Skipping $FILENAME because it contains 'out'"
+    return
+  fi
 	DIRNAME=$(dirname "$FILE")
 	echo "DIRNAME $DIRNAME"
 	EXT="${FILENAME##*.}"
@@ -19,7 +24,7 @@ function test_dimp(){
   fi
   echo "FILE_NEW $FILE_NEW"
   mv -v --backup=numbered "$FILE_NEW" "$FILE_NEW~"
-  return
+  # return
   curl --request POST \
     --url 'http://localhost:8083/fhir/$de-identify' \
     --header 'content-type: application/json' \
