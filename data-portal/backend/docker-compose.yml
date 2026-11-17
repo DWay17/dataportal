@@ -21,7 +21,7 @@ services:
       - ../auth:/opt/dataportal-backend/certs
 
   dataportal-postgres:
-    image: 'postgres:18.6-alpine'
+    image: 'postgres:18.7-alpine'
     ports:
       - ${DATAPORTAL_BACKEND_DB_PORT:-127.0.0.1:5432}:5432
     environment:
@@ -34,7 +34,7 @@ services:
         source: dataportal-postgres-data
         target: /var/lib/postgresql
   dataportal-elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.5
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.6
     ports:
       - ${DATAPORTAL_BACKEND_ES_PORT:-127.0.0.1:9200}:9200
     healthcheck:
@@ -60,7 +60,7 @@ services:
     environment:
       ES_HOST: http://dataportal-elastic
       ES_PORT: 9200
-      ONTO_GIT_TAG: v5.2.1
+      ONTO_GIT_TAG: v5.2.2
       ONTO_REPO: https://github.com/medizininformatik-initiative/fhir-ontology-generator/releases/download
       DOWNLOAD_FILENAME: elastic.zip
       FORCE_REINSTALL: ${DATAPORTAL_ES_INIT_FORCE_REINSTALL:-false}

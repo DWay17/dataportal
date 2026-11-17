@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ONTOLOGY_VERSION=${ONTOLOGY_VERSION:-5.0.1}
+ONTOLOGY_VERSION=${ONTOLOGY_VERSION:-5.2.2}
 
 echo "\$0 = $0"
 echo "dirname \$0 = $(dirname "$0")"
