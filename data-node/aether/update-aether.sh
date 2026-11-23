@@ -20,4 +20,11 @@ case "$version" in
     ;;
 esac
 
-sudo mv aether /usr/local/bin/
+cp -v aether "aether.${version}"
+
+# check if binary is a link
+if [ -L "/usr/local/bin/aether" ] ; then
+	ls -l /usr/local/bin/aether
+else
+	sudo mv aether /usr/local/bin/
+fi
