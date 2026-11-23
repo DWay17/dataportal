@@ -14,8 +14,6 @@ services:
     image: ghcr.io/medizininformatik-initiative/torch:1.1.0
     ports:
       - ${TORCH_PORT:-127.0.0.1:8086}:8080
-    environment:
-      - key2=val2
     env_file:
       - .env
     environment:
