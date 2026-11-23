@@ -1,19 +1,19 @@
 services:
   fhir-server-keycloak-db:
-    image: postgres:17-alpine
+    image: postgres:18.7-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${KC_DB_URL_DB:-keycloakdb}
       POSTGRES_USER: ${KC_DB_USERNAME:-keycloakdbuser}
       POSTGRES_PASSWORD: ${KC_DB_PASSWORD:-keycloakdbpw}
     healthcheck:
-      test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_NAME}'" ]
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}'" ]
       interval: 30s
       timeout: 60s
       retries: 5
       start_period: 80s
     volumes:
-      - "fhir-server-keycloak-db:/var/lib/postgresql/data"
+      - "fhir-server-keycloak-db:/var/lib/postgresql"
   fhir-server-frontend-keycloak:
     image: quay.io/keycloak/keycloak:26.8.2
     command: ["start", "--import-realm"]
@@ -37,6 +37,8 @@ services:
     env_file:
       - .env
     environment:
+      # Workaround for CVE-2026-114938 (Java4Shell). Remove once the image ships a patched JDK.
+      JAVA_OPTS_APPEND: "-XX:-UseBASE64Intrinsics"
       KC_DB: postgres
       KC_DB_URL: "jdbc:postgresql://fhir-server-keycloak-db:5432/${KC_DB_URL_DB:-keycloakdb}"
     volumes:
